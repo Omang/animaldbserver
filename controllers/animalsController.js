@@ -195,10 +195,10 @@ const getanimalOwner = asyncHandler(async(req, res)=>{
 
         //const owner = await Animal.findById(id).populate("animal_owner");
        // console.log(owners);
-      var ObjectId = require('mongodb').ObjectID;
+     // var ObjectId = require('mongodb').ObjectID;
 
-      const oids =  new ObjectId(id);
-      const theone = await Owner.find({ owner_animals: {$in : [oids]}});
+      //const oids =  new ObjectId(id);
+      const theone = await Owner.find({ "owner_animals": {"$in" : [id]}});
       
 
       console.log(theone);
