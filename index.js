@@ -7,7 +7,7 @@ const dotenv = require('dotenv').config();
 const PORT = process.env.PORT || 4000;
 
 
-const router = require('./routes/authroutes');
+const router = require('./routes/Authroutes');
 const animalrouter = require('./routes/Animalroutes');
 const ownerrouter = require('./routes/Ownerroutes');
 const orgrouter = require('./routes/Orgroutes');
