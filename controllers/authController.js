@@ -46,8 +46,10 @@ console.log(req.body);
         new: true
       });
       res.cookie("refreshToken", refreshtoken,{
+        sameSite:'None',
+        secure: true,
+        maxAge: 72*60*60*1000,
         httpOnly: true,
-        maxAge: 72*60*60*1000
       });
       res.json({
         _id: findone?._id,
@@ -72,25 +74,21 @@ console.log(req.body);
 
 const logout = asyncHandler(async(req, res)=>{
 
-    const cookie = req.cookies;
-    if(!cookie?.refreshToken) throw new Error("No refresh Token in cookies");
-    const refreshtoken = cookie.refreshToken;
-    const user = await User.findOne({refreshtoken}); 
+    const {refreshToken} = req.body;
+    //console.log(req.cookies);
+    if(!refreshToken) throw new Error("No refresh Token in cookies");
+    
+    const user = await User.findOne({refreshToken}); 
     if(!user){
-      res.clearCookie("refreshToken",{
-        httpOnly: true,
-        secure: true
-      });
-      return res.sendStatus(204) //forbidden
-    }  
-    await User.findOneAndUpdate(refreshtoken, {
+      
+      return res.status(204) //forbidden
+    }else{
+      await User.findOneAndUpdate(refreshToken, {
       refreshToken: ""
     });
-    res.clearCookie("refreshToken",{
-      httpOnly: true,
-      secure: true
-    });
-     res.sendStatus(204).json({logout: "logged out"}); //forbidden
+   
+     res.status(204).json({logout: "logged out"}); //forbidden
+    }  
     
       
    });

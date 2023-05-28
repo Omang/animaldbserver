@@ -17,7 +17,7 @@ router.put('/blockuser/:id', authMiddleware, isAdmin, blockUser);
 router.put('/unblockuser/:id', authMiddleware, isAdmin, unblockUser);
 router.put('/updatepassword', authMiddleware, updatePassword);
 router.delete('/deleteuser/:id', authMiddleware, isAdmin, deleteaUser);
-router.get('/logout', authMiddleware, logout);
+router.post('/logout', logout);
 
 
 module.exports = router;
