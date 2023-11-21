@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(cors({
  
  credentials: true,
- origin: "https://animaldbclient.onrender.com"
+ origin: "https://animalsdatabasebotswana.co.bw"
 
 }));
 
