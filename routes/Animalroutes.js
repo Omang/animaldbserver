@@ -11,6 +11,6 @@ router.put('/switchanimal/:id', authMiddleware, switchAnimal);
 router.get('/getanimal/:id', authMiddleware, getAnimal);
 router.get('/getallanimals', getallAnimals);
 router.get('/getanimalowner/:id', getanimalOwner);
-router.put('/addpatientcard', authMiddleware, addpatientCard);
+router.post('/addpatientcard', authMiddleware, addpatientCard);
 
 module.exports = router;

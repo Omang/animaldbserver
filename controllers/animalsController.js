@@ -4,8 +4,41 @@ const Vaccination = require('../models/vaccinationModel');
 
 const asyncHandler = require('express-async-handler');
 
+const addhealth = asyncHandler(async(req, res)=>{
+    const {animal_id, disease_name,
+    vaccinated,
+    by_name,
+    at_name,
+    vaccinated_on,
+    next_vaccination} = req.body;
 
+    try{
 
+        const addone = await Vaccination.create({
+            animal_id: animal_id,
+            vaccinated: vaccinated,
+            by_name: by_name,
+            at_name: at_name,
+            vaccinated_on: vaccinated_on
+        });
+
+        if(addone){
+
+            const findanimal = await Animal.findByIdAndUpdate(animal_id, {
+                $push : {
+                    vaccinationdata: addone.toString()
+                }
+            },{new: true});
+            res.json(findanimal);
+
+        }else{
+            res.json({message: 'health not added'});
+        }
+
+    }catch(error){
+        throw new Error(error);
+    }
+})
 const addAnimal = asyncHandler(async(req, res)=>{
 
     const {animal_name, animal_chip, 
@@ -116,17 +149,8 @@ const getAnimal = asyncHandler(async(req, res)=>{
     
     try{
 
-        const animal = await Animal.findById(id);
-        if(animal.vaccinationdata){
-            const animalx = await Animal.findById(id).populate("vaccinationdata");
-
-            res.json(animalx)
-        }else{
-            
-            res.json(animal);
-        }
-
-        
+        const animal = await Animal.findById(id).populate("vaccinationdata");;
+        res.json(animal);
 
     }catch(error){
        throw new Error(error)
@@ -179,7 +203,9 @@ const addpatientCard = asyncHandler(async(req, res)=>{
                 $push:{vaccinationdata: add_disease._id.toString()}
             }, {new:true});
 
-            res.json(link_disease);
+            res.json({message: link_disease});
+        }else{
+           res.json({error: link_disease}); 
         }
 
     }catch(error){
